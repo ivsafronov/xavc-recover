@@ -62,8 +62,13 @@ image (card size)  +  recovered clips (~= the footage you actually shot)
 In other words, a card that was 3/4 full needs ~1.75× its capacity free. Reserve the space
 before you start; running out halfway wastes the attempt.
 
+Find that space **somewhere other than the card itself**. Writing the image onto the same device
+you are imaging is a reliable way to overwrite exactly the data you are trying to recover. Use a
+different disk, formatted exFAT or NTFS — FAT32 will not take a file over 4 GB, and a 128 GB card
+produces a 128 GB image.
+
 If you are short on space, extract clips one at a time and delete the image only after checking
-the output. Do **not** write the image to any partition of the card itself.
+the output.
 
 ### Step 2 — make the image
 
