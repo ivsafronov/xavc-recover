@@ -6,7 +6,7 @@ Recover **MP4 video** from a **formatted Sony camera card** by reading a raw ima
 
 An [Agent Skills](https://agentskills.io) skill plus the CLI script it calls. The format is supported
 by **Claude Code, OpenAI Codex, VS Code Copilot, OpenCode** and other clients: give an agent the repo
-URL and it installs the skill and runs the recovery itself.
+URL.
 
 > **Scope of testing.** The script was exercised on a real card, but the skill has been run **in
 > OpenCode only** — not in Claude Code, Codex or Copilot. The format is shared, the integration may
@@ -24,27 +24,14 @@ tool finds the clips in the image, splices them, and verifies that every file de
 
 > **This tool only ever reads the image file.** It never touches a card. Make the image first.
 
-## Install as a skill
+> **Important.** Recovery is only possible if **nothing was written** to the card after the
+> format. Any new recording overwrites the clusters holding the old clips.
 
-The skill ships in two locations so different clients find it:
+## Skill
 
-```
-.agents/skills/xavc-recover/SKILL.md    # OpenCode, VS Code Copilot, Agent Skills standard
-.claude/skills/xavc-recover/SKILL.md    # Claude Code
-```
-
-Copy the folder your client needs:
-
-| Client | Where |
-| --- | --- |
-| Claude Code | `~/.claude/skills/xavc-recover/` (or `.claude/skills/` in a project) |
-| OpenCode | `~/.config/opencode/skills/xavc-recover/` (or `.opencode/skills/`) |
-| VS Code Copilot | `.agents/skills/xavc-recover/` in the project |
-| Codex and others | `.agents/skills/xavc-recover/` |
-
-Then just tell the agent "my Sony card got formatted, recover the mp4" — the skill activates from
-its description. The skill calls `xavc_recover.py` from this repo, so clone the whole repository,
-not only the skill folder.
+`SKILL.md` lives in `.agents/skills/xavc-recover/` and `.claude/skills/xavc-recover/`. From there
+it is the usual routine: give an agent the repo URL and it works it out. The skill calls
+`xavc_recover.py` from this repo, so clone the whole repository.
 
 ## Manually
 
