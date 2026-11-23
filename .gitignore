@@ -1,0 +1,7 @@
+*.img
+*.raw
+*.dd
+recovered/
+__pycache__/
+*.pyc
+scan.json
