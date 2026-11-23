@@ -2,26 +2,53 @@
 
 [Русский](README.md) · **English**
 
-> **Disclaimer.** This tool was written and verified against one real case: a card from a **Sony
-> ILCE-7SM3 (A7S III)**, XAVC-M4, 4K 4:2:2 10-bit. Every clip number, mode, resolution and figure
-> in this documentation comes from that case — they are not a claim about your camera. The XAVC
-> layout on other Sony bodies is *likely* the same but **unverified**. Run `scan` and confirm the
-> clips are found and pass validation before trusting the output — see
-> [Compatibility](#compatibility). The tool only ever reads the image file and never writes to a
-> card.
-
 Recover **MP4 video** from a **formatted Sony camera card** by reading a raw image of the card.
 
-Sony cards (A7S III, FX3, FX6, A7 IV and other XAVC bodies) store video as ordinary `.MP4` files in
-`PRIVATE/M4ROOT/CLIP/`. If you formatted the card and are looking for your **mp4** files, they are
-here, and this tool recovers exactly those.
+An [Agent Skills](https://agentskills.io) skill plus the CLI script it calls. The format is supported
+by **Claude Code, OpenAI Codex, VS Code Copilot, OpenCode** and other clients: give an agent the repo
+URL and it installs the skill and runs the recovery itself.
 
-Standard undelete tools (PhotoRec, testdisk, FAT chain walkers) recover **nothing** from an XAVC
-card, because of how the camera lays the files out — see
-[Why the usual tools fail](#why-the-usual-tools-fail). This tool recovers the clips by reading the
-image directly, then verifies that every file it writes actually decodes.
+> **Scope of testing.** The script was exercised on a real card, but the skill has been run **in
+> OpenCode only** — not in Claude Code, Codex or Copilot. The format is shared, the integration may
+> differ. If it does not pick up, please open an issue.
+>
+> Verified against one case: a card from a **Sony ILCE-7SM3 (A7S III)**, XAVC-M4, 4K 4:2:2 10-bit.
+> Every figure in this documentation comes from that case, not from your camera. Other Sony bodies
+> *likely* share the layout but **unverified** — run `scan` and confirm the clips are found before
+> trusting the output. The tool only reads the image and never writes to a card.
+
+Sony cards (A7S III, FX3, FX6, A7 IV and others) store video as ordinary `.MP4` files in
+`PRIVATE/M4ROOT/CLIP/`. PhotoRec, testdisk and FAT chain walkers recover **nothing** from such a
+card — the files are XAVC, and it is laid out unusually ([why](#why-the-usual-tools-fail)). This
+tool finds the clips in the image, splices them, and verifies that every file decodes.
 
 > **This tool only ever reads the image file.** It never touches a card. Make the image first.
+
+## Install as a skill
+
+The skill ships in two locations so different clients find it:
+
+```
+.agents/skills/xavc-recover/SKILL.md    # OpenCode, VS Code Copilot, Agent Skills standard
+.claude/skills/xavc-recover/SKILL.md    # Claude Code
+```
+
+Copy the folder your client needs:
+
+| Client | Where |
+| --- | --- |
+| Claude Code | `~/.claude/skills/xavc-recover/` (or `.claude/skills/` in a project) |
+| OpenCode | `~/.config/opencode/skills/xavc-recover/` (or `.opencode/skills/`) |
+| VS Code Copilot | `.agents/skills/xavc-recover/` in the project |
+| Codex and others | `.agents/skills/xavc-recover/` |
+
+Then just tell the agent "my Sony card got formatted, recover the mp4" — the skill activates from
+its description. The skill calls `xavc_recover.py` from this repo, so clone the whole repository,
+not only the skill folder.
+
+## Manually
+
+Without an agent — five steps.
 
 ## Requirements
 
@@ -29,7 +56,14 @@ image directly, then verifies that every file it writes actually decodes.
 - For the dump itself: `dd` (Linux/macOS/WSL) or a Windows equivalent — see below.
 - Optional, for verification: `ffmpeg` / `ffprobe`.
 
-## Step 0 — free the space you need
+### Step 0 — stop using the card
+
+Pull it out. Every mount of the card lets the camera or OS rewrite the directory and reuse freed
+clusters, which is exactly what destroys the footage. Do not "repair", do not "safely remove and
+reinsert to check", do not let anything auto-mount it read-write. Prefer a write blocker if you
+have one.
+
+### Step 1 — free the space you need
 
 **Budget at least 2× the card size.** A 128 GB card produces a ~128 GB image, and the recovered
 clips add up to roughly the card's used space on top of that. In practice:
@@ -44,14 +78,7 @@ before you start; running out halfway wastes the attempt.
 If you are short on space, extract clips one at a time and delete the image only after checking
 the output. Do **not** write the image to any partition of the card itself.
 
-## Step 1 — stop using the card
-
-Pull it out. Every mount of the card lets the camera or OS rewrite the directory and reuse freed
-clusters, which is exactly what destroys the footage. Do not "repair", do not "safely remove and
-reinsert to check", do not let anything auto-mount it read-write. Prefer a write blocker if you
-have one.
-
-## Step 2 — make the image
+### Step 2 — make the image
 
 **Linux / macOS**
 
@@ -86,7 +113,7 @@ writes over the card.
 The image will be exactly the device size. A trailing `Error reading file: 27 (device not
 ready)` on the last block is normal — the reader tried one block past the end.
 
-## Step 3 — look before you cut
+### Step 3 — look before you cut
 
 ```bash
 python3 xavc_recover.py info card.img
@@ -107,7 +134,7 @@ clusters; those clips are damaged or gone.
 Indices are assigned in image order, which is **not** shooting order. Use durations and the XML
 timestamps to sort.
 
-## Step 4 — extract
+### Step 4 — extract
 
 ```bash
 python3 xavc_recover.py extract card.img -o ./recovered
@@ -115,7 +142,7 @@ python3 xavc_recover.py extract card.img -o ./recovered
 
 Writes each clip plus its sidecar XML. Clips that fail validation are skipped with a reason.
 
-## Step 5 — verify every file
+### Step 5 — verify every file
 
 Never ship a file you have not decoded end to end.
 
