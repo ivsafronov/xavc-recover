@@ -1,12 +1,21 @@
 ---
 name: xavc-recover
-description: Recover video clips from a formatted Sony XAVC camera card (A7S III and similar XAVC bodies). Use when someone has accidentally formatted a Sony camera SD/CFexpress card and needs the footage back, when standard undelete tools (PhotoRec, testdisk) returned nothing or produced files that will not play, or when a card image needs its XAVC clips carved and verified. Covers imaging the card safely, scanning for clip headers, splicing header cluster to body, joining clips to their sidecar XML, and proving each file decodes.
+description: Recover deleted or formatted MP4 video from a Sony camera SD / CFexpress card, including XAVC, XAVC S, XAVC S-I and XAVC HS footage. Use when someone accidentally formatted a Sony camera card (A7S III, A7 IV, A7C, FX3, FX6, FX30, ZV-E1, ZV-1, a6xxx) or deleted clips and needs the .MP4 files back; when PhotoRec, Recuva, Disk Drill, EaseUS or 4DDiG returned nothing, returned files that will not play, or files with "moov atom not found"; when recovered MP4s are the right size but open as black or invalid; or when a raw card image (dd / .img / .dd) needs MP4 clips carved out and verified with ffmpeg. Covers imaging the card without destroying it, finding XAVC header clusters, splicing header to body, matching clips to their sidecar XML, restoring original file names, and proving every file decodes. Also: восстановить mp4 с отформатированной флешки Sony, восстановление видео с карты памяти, битые mp4 после восстановления.
 ---
 
-# Recovering a formatted Sony XAVC card
+# Recovering MP4 video from a formatted Sony card
 
-The footage is usually still there. Sony XAVC cards fail the standard recovery workflow for
-reasons that are specific and fixable — but only if nothing writes to the card in the meantime.
+The target is always **`.MP4` files** in `PRIVATE/M4ROOT/CLIP/`. The container format is XAVC, which
+is why generic carvers fail — but what the user wants back is ordinary MP4 video, so use that word
+with them.
+
+**Everything specific in this skill comes from one verified case: a Sony ILCE-7SM3 (A7S III),**
+XAVC-M4, 4K 4:2:2 10-bit, LPCM 2ch. Clip counts, modes, resolutions and file names below are that
+example, not a specification of the user's card. The layout on other Sony bodies is likely the same
+but unverified — make the user confirm with `scan` before they trust the output.
+
+The footage is usually still there. Sony cards fail the standard recovery workflow for reasons that
+are specific and fixable — but only if nothing writes to the card in the meantime.
 
 The user's first instinct will be to plug the card in and run PhotoRec. Stop them before they do.
 

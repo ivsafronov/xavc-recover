@@ -1,7 +1,12 @@
 # Sony XAVC file layout on exFAT cards (reverse-engineered)
 
-Everything here was derived from a 128 GB exFAT card out of a **Sony ILCE-7SM3 (A7S III)**
-recorded in `XAVC-M4@2.00.00`, `AVC200_3840_2160_H422P@L52`, `LPCM16`, 50p (and a few 59.94p clips).
+Everything here was derived from one card: a 128 GB exFAT card out of a **Sony ILCE-7SM3
+(A7S III)** recorded in `XAVC-M4@2.00.00`, `AVC200_3840_2160_H422P@L52`, `LPCM16`, 50p (and a few
+59.94p clips).
+
+Treat the concrete numbers below as that example, not as constants of the format. Cluster size,
+moov size, the `free` box length and the frame rates all depend on the camera and recording mode.
+The *structure* is what generalises; the values are what was observed.
 
 ## Why naive carving fails
 

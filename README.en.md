@@ -2,7 +2,19 @@
 
 [Русский](README.md) · **English**
 
-Recover movies from a **formatted Sony XAVC card** by reading a raw image of the card.
+> **Disclaimer.** This tool was written and verified against one real case: a card from a **Sony
+> ILCE-7SM3 (A7S III)**, XAVC-M4, 4K 4:2:2 10-bit. Every clip number, mode, resolution and figure
+> in this documentation comes from that case — they are not a claim about your camera. The XAVC
+> layout on other Sony bodies is *likely* the same but **unverified**. Run `scan` and confirm the
+> clips are found and pass validation before trusting the output — see
+> [Compatibility](#compatibility). The tool only ever reads the image file and never writes to a
+> card.
+
+Recover **MP4 video** from a **formatted Sony camera card** by reading a raw image of the card.
+
+Sony cards (A7S III, FX3, FX6, A7 IV and other XAVC bodies) store video as ordinary `.MP4` files in
+`PRIVATE/M4ROOT/CLIP/`. If you formatted the card and are looking for your **mp4** files, they are
+here, and this tool recovers exactly those.
 
 Standard undelete tools (PhotoRec, testdisk, FAT chain walkers) recover **nothing** from an XAVC
 card, because of how the camera lays the files out — see
