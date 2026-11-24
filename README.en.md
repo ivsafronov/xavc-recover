@@ -8,14 +8,14 @@ An [Agent Skills](https://agentskills.io) skill plus the CLI script it calls. Th
 by **Claude Code, OpenAI Codex, VS Code Copilot, OpenCode** and other clients: give an agent the repo
 URL.
 
-> **Scope of testing.** The script was exercised on a real card, but the skill has been run **in
-> OpenCode only** — not in Claude Code, Codex or Copilot. The format is shared, the integration may
-> differ. If it does not pick up, please open an issue.
+> **Scope of testing.** The skill has been run in **OpenCode on Windows** and **Codex on macOS** —
+> not in Claude Code or Copilot. The format is shared, the integration may differ. If it does not
+> pick up, please open an issue.
 >
-> Verified against one case: a card from a **Sony ILCE-7SM3 (A7S III)**, XAVC-M4, 4K 4:2:2 10-bit.
-> Every figure in this documentation comes from that case, not from your camera. Other Sony bodies
-> *likely* share the layout but **unverified** — run `scan` and confirm the clips are found before
-> trusting the output. The tool only reads the image and never writes to a card.
+> Verified against two cards from a **Sony ILCE-7SM3 (A7S III)**, XAVC-M4, 4K 4:2:2 10-bit.
+> Every figure in this documentation comes from those cases, not from your camera. Other Sony
+> bodies *likely* share the layout but **unverified** — run `scan` and confirm the clips are found
+> before trusting the output. The tool only reads the image and never writes to a card.
 
 Sony cards (A7S III, FX3, FX6, A7 IV and others) store video as ordinary `.MP4` files in
 `PRIVATE/M4ROOT/CLIP/`. PhotoRec, testdisk and FAT chain walkers recover **nothing** from such a
@@ -190,8 +190,8 @@ Three independent reasons:
 
 ## Compatibility
 
-Verified on a Sony **ILCE-7SM3 (A7S III)**, `XAVC-M4@2.00.00`, `AVC200_3840_2160_H422P@L52`,
-50p and 59.94p, LPCM 2ch.
+Verified on two cards from a Sony **ILCE-7SM3 (A7S III)**, `XAVC-M4@2.00.00`,
+`AVC200_3840_2160_H422P@L52`, 50p and 59.94p, LPCM 2ch.
 
 Other Sony bodies recording XAVC S / XAVC S-I / XAVC HS are *likely* to share the layout, but
 that is unverified. Check before trusting it:

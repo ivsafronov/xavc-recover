@@ -88,8 +88,8 @@ finds it automatically.
 
 ## Compatibility
 
-Verified on **one** card: Sony ILCE-7SM3 (A7S III), XAVC-M4, 4K 4:2:2 10-bit, LPCM 2ch. Clip
-counts, modes and names in this skill are from that case, not a spec for the user's camera.
+Verified on **two** cards: Sony ILCE-7SM3 (A7S III), XAVC-M4, 4K 4:2:2 10-bit, LPCM 2ch. Clip
+counts, modes and names in this skill are from those cases, not a spec for the user's camera.
 
 Other Sony bodies likely share the layout but **are unverified**. Make the user confirm with `scan`
 before trusting output. If candidates appear but all are `DAMAGED`, the layout differs — stop and

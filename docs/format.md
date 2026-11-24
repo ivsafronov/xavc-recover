@@ -1,7 +1,7 @@
 # Sony XAVC file layout on exFAT cards (reverse-engineered)
 
-Everything here was derived from one card: a 128 GB exFAT card out of a **Sony ILCE-7SM3
-(A7S III)** recorded in `XAVC-M4@2.00.00`, `AVC200_3840_2160_H422P@L52`, `LPCM16`, 50p (and a few
+Everything here was derived from two 128 GB exFAT cards out of **Sony ILCE-7SM3 (A7S III)**
+cameras recorded in `XAVC-M4@2.00.00`, `AVC200_3840_2160_H422P@L52`, `LPCM16`, 50p (and a few
 59.94p clips).
 
 Treat the concrete numbers below as that example, not as constants of the format. Cluster size,
@@ -115,7 +115,7 @@ on duration — durations are not unique.
 
 ## Compatibility
 
-Verified on: **ILCE-7SM3 (A7S III)**, XAVC-M4, 4K 4:2:2 10-bit.
+Verified on two cards: **ILCE-7SM3 (A7S III)**, XAVC-M4, 4K 4:2:2 10-bit.
 
 The layout depends on the camera writing `ftyp` brand `XAVC` and appending the header cluster
 after the body. Other Sony bodies using XAVC S / XAVC S-I / XAVC HS are *expected* to share it,
