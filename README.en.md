@@ -134,9 +134,7 @@ python3 xavc_recover.py extract card.img -o ./recovered
 
 Writes each clip plus its sidecar XML. Clips that fail validation are skipped with a reason.
 
-### Step 5 — verify every file
-
-Never ship a file you have not decoded end to end.
+### Step 5 — check that the clips decode
 
 ```bash
 for f in ./recovered/*.MP4; do
@@ -171,11 +169,12 @@ manually rather than trusting a sequence number.
 - **Audio**: LPCM (`pcm_s16be`, `twos`) — untouched.
 - **Camera metadata**: the third `rtmd` track survives, so lens, gamma, gyro and settings are
   still in the file.
-- **Timecode: only in the XML.** Sony does not write a `tmcd` track into XAVC MP4 — this is true
-  of untouched camera files too, not a recovery artefact. LTC lives in
-  `<LtcChangeTable tcFps="25">` in the sidecar `M01.XML`. Most NLEs (Resolve, Premiere) do not
-  read Sony's `M01.XML` timecode anyway; Catalyst Browse/Prepare does. So keep the XML with the
-  clips, but do not promise an editor timecode that their tool will not show.
+- **Timecode: in the file.** XAVC MP4 has no `tmcd` track, but the LTC sits in the third `rtmd`
+  track (`hdlr=meta`, `stsd=rtmd`) — Sony KLV, one packet per frame. That is why Resolve and
+  Catalyst Browse show source timecode with no XML at all, while `ffprobe` prints nothing and
+  reports the track as `codec_name=unknown`. The sidecar `M01.XML` (`<LtcChangeTable tcFps="25">`)
+  duplicates the LTC and records discontinuities: worth shipping with the clips, but the timecode
+  survives without it.
 
 ## Why the usual tools fail
 

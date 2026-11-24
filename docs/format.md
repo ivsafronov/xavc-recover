@@ -86,11 +86,12 @@ Seek granularity does not matter; reading in 16 MiB blocks works.
 If you see `Invalid NAL unit size` / `missing picture in access unit`, the splice is wrong or the
 clip was partially overwritten — do not ship it.
 
-## What the MP4 does *not* contain
+## What the MP4 does and does not contain
 
-- **No `tmcd` track — no timecode in the MP4.** Sony keeps LTC in the sidecar XML
-  (`<LtcChangeTable tcFps="25">`). Verified on an untouched camera file as well as on recovered
-  ones. Without the XML you get relative time only.
+- **No `tmcd` track — but the timecode is in the file.** LTC is carried in the third `rtmd` track
+  (Sony KLV, one packet per frame), which is why Resolve and Catalyst Browse show source timecode
+  with no XML. `ffprobe` does not print it and reports the track as `codec_name=unknown`.
+  The sidecar XML (`<LtcChangeTable tcFps="25">`) duplicates the LTC and records discontinuities.
 - Creation time *is* in `mvhd` (`creation_time`, epoch 1904) and shows up in ffprobe.
 - The third track **is** present: `hdlr=meta`, `stsd=rtmd`, carrying real Sony KLV essence
   (`00 1C 01 00` + UL `060E2B34...`). Camera metadata survives.

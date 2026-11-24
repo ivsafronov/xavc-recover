@@ -80,8 +80,9 @@ finds it automatically.
 - A partly overwritten clip may still play past the damage. Find where content resumes and report
   a range ("readable 1:19–2:32") rather than handing over a file that silently starts broken.
 - Verify by decoding, not by file size. Right length, garbage content is common.
-- **No timecode in the MP4.** XAVC MP4 has no `tmcd` track — true of untouched camera files too.
-  LTC lives only in the sidecar XML, and most NLEs ignore it. Say this up front if asked.
+- **Timecode is in the file, not only in the XML.** XAVC MP4 has no `tmcd` track, but the LTC sits
+  in the third `rtmd` track (Sony KLV, one packet per frame), so Resolve and Catalyst Browse read
+  it with no XML at all. `ffprobe` does not show it — never tell the user the timecode is lost.
 - Frame rate can legitimately differ within one card (50p and 59.94p if the camera was switched to
   NTSC). That is not corruption.
 
